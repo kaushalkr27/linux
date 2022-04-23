@@ -6005,12 +6005,35 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
  * The guest has exited.  See if we can fix it or if we need userspace
  * assistance.
  */
+
+uint64_t rdtsc(void){
+    unsigned int lo,hi;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t)hi << 32) | lo;
+}
+
+extern u32 total_exits;
+extern u64 total_cycles;
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
+
+	u64 start, end, diff;
+	int ret;
+
+	total_exits++;
+
+	start = rdtsc_customize();
+	ret = __vmx_handle_exit(vcpu, exit_fastpath);
+
+	end = rdtsc();
+
+	diff = (end - start);
+	total_cycles += diff;
+	
 
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
