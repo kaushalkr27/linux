@@ -1443,6 +1443,11 @@ u32 total_exits;
 u64 total_cycles;
 EXPORT_SYMBOL(total_exits);
 EXPORT_SYMBOL(total_cycles);
+
+atomic_t exits_array[70];
+atomic_long_t exits_cycles_array[70];
+EXPORT_SYMBOL(exits_array);
+EXPORT_SYMBOL(exits_cycles_array);
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
@@ -1465,6 +1470,24 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 		ebx = (total_cycles_temp >> 32);
 		ecx = (total_cycles_temp & 0x0FFFFFFFF);
 		printk("%llu",total_cycles_temp);
+	}else if(eax == 0x4FFFFFFD){
+		eax = atomic_read(&exits_array[ecx]);
+		printk("CPUID - 0x4FFFFFFD\n");
+		for (i = 0; i < 70; i++) {
+			//eax = atomic_read(&exits_array[ecx]);
+			printk("Exit Reason: %u, Times Occurred: %u\n", i, atomic_read(&exits_array[i]));
+		}
+	}else if(eax == 0x4FFFFFFC){
+		exit_cpu_cycles = atomic64_read(&exits_cycles_array[ecx]);
+		ebx = exit_cpu_cycles >> 32;
+		ecx = exit_cpu_cycles & 0xFFFFFFFF;
+		printk("CPUID - 0x4FFFFFFC\n");
+		for (i = 0; i < 70; i++) {
+			//exit_cpu_cycles = atomic64_read(&exits_cycles_array[ecx]);
+			//ebx = exit_cpu_cycles >> 32;
+			//ecx = exit_cpu_cycles & 0xFFFFFFFF;
+			printk("Exit Reason: %u total CPU cycles is %llu\n", i, atomic64_read(&exits_cycles_array[i]));
+		}
 	}
 	else {
 		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
