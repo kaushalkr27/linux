@@ -6006,12 +6006,6 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
  * assistance.
  */
 
-uint64_t rdtsc(void){
-    unsigned int lo,hi;
-    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
-    return ((uint64_t)hi << 32) | lo;
-}
-
 extern u32 total_exits;
 extern u64 total_cycles;
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
