@@ -6009,6 +6009,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
 extern u32 total_exits;
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
+	int ret;
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
 	u32 vectoring_info = vmx->idt_vectoring_info;
@@ -6200,11 +6201,12 @@ extern u64 total_cycles;
 static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
 
+	int ret;
 	u64 start, end, diff;
 
 	start = rdtsc_customize();
 
-	int ret = __vmx_handle_exit(vcpu, exit_fastpath);
+	ret = __vmx_handle_exit(vcpu, exit_fastpath);
 
 	end = rdtsc_customize();
 
