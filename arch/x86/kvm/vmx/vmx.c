@@ -6006,6 +6006,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
  * assistance.
  */
 
+EXPORT_SYMBOL(total_exits);
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
 	extern u32 total_exits;
@@ -6187,6 +6188,10 @@ unexpected_vmexit:
 	vcpu->run->internal.data[1] = vcpu->arch.last_vmentry_cpu;
 	return 0;
 }
+
+EXPORT_SYMBOL(all_cpu_cycles);
+EXPORT_SYMBOL(exits_array);
+EXPORT_SYMBOL(exits_cycles_array);
 
 static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
