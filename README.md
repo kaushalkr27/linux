@@ -103,7 +103,9 @@
 ## Assignment 4
 ### Q1:
   - Kaushal Karinaga Shetter Raju 015721238, Siddh Patel 015934074
-  - We decided to work together throghout the project and did not split the work globally. Each person, at the end, had similar contribution and context. 
+  - Kaushal Karinaga Shetter - Switched KVM to shadow paging (ept=0)
+•	Executed the previous assignment and took for Shadow Paging (ept = 0). 
+  - Siddh Patel - Executed the previous code of assignment and took the output for Nested paging (ept = 1). 
 ### Q2:
   - lsmod | grep kvm
   - rmmod kvm_intel
