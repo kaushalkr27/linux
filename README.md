@@ -106,10 +106,38 @@
   - Kaushal Karinaga Shetter - Switched KVM to shadow paging (ept=0)
 •	Executed the previous assignment and took for Shadow Paging (ept = 0). 
   - Siddh Patel - Executed the previous code of assignment and took the output for Nested paging (ept = 1). 
-### Q2:
-  - lsmod | grep kvm
-  - rmmod kvm_intel
-  - insmod /lib/modules/5.15.0+/kernal/arch/x86/kvm/kvm-intel.ko ept=0
+### Q2: Steps
+  - Steps:-
+ 
+Checked if the previous assignment was functional.
+
+Step 1: Open Vmware and start virtual machine for starting linux.
+
+1.	Use command, dmesg 
+
+Step 2: To switch from nested paging to shadow paging, we can use following commands:-
+	
+-	sudo rmmod kvm_intel && sudo modprobe kvm && sudo modprobe kvm_intel ept=0 && sudo rmmod kvm 
+-	Now we need to Reboot the system.
+
+Now we can use dmesg (not using Shadow paging) :-
+
+3.  Number of Exits
+- In shadow paging, maximum exit occurred of type “CR_ACCESS " from our observation.
+- INVLPG exit is present in case of shadow paging too.
+
+4.  The changes between two runs (ept vs no-ept)
+
+Shadow Paging (ept=0)
+-  The VM exits for the INVALPG
+-  There is a significant increase in count of exits for reason CR_ACCESS
+-  Exit count for XSETBV
+
+Nested Paging (ept=1)	
+- The VM exits for EPT_VIOLATION
+- The VM exits for EPT_MISCONFIG
+
+-  In Shadow Paging, the count of exits significantly increased for CR_ACCESS reason as the hypervisor is taking exit on access of CR register.
 
 ### Output: 
   - With EPT (Nested Paging)
