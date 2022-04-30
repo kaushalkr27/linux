@@ -1451,12 +1451,11 @@ EXPORT_SYMBOL(exits_cycles_array);
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
+	u64 total_cycles_temp;
+	u64 exit_cpu_cycles;
 
 	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
 		return 1;
-
-	u64 total_cycles_temp;
-	u64 exit_cpu_cycles;
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
