@@ -1455,8 +1455,8 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
 		return 1;
 
-	uint64_t total_cycles_temp;
-	uint64_t exit_cpu_cycles;
+	u64 total_cycles_temp;
+	u64 exit_cpu_cycles;
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
