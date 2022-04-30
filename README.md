@@ -79,4 +79,40 @@
    - Processor cycle output:
    - ![](out/4.png)
    - ![](out/5.png)
+
+## Assignment 3
+### Q1:
+  - Kaushal Karinaga Shetter Raju 015721238, Siddh Patel 015934074
+  - Kaushal Karinaga Shetter Raju - 0x4FFFFFFC
+  - Siddh Patel - 0x4FFFFFFC
+
+### Q2:
+  - Assignment 3 is a continuation of Assignment 2, therefore the steps are the same, with the exception of the CPUID leaf node in the inner VM.
+  - Implement CPUID leaf nodes 0x4FFFFFFC and 0x4FFFFFFD in the Linux kernel's cpuid.c and vmx.c files.
+  - Command in the inner VM:
+    - cpuid -l 0x4FFFFFFC
+    - cpuid -l 0x4FFFFFFD
+  - Here are the results:
+    - ![](out/3-1.png)
+    - ![](out/3-2.png)
+  - Here are the results from host (dmesg): 
+    - ![](out/3-4.png)
+    - ![](out/3-3.png)
+
+
+## Assignment 4
+### Q1:
+  - Kaushal Karinaga Shetter Raju 015721238, Siddh Patel 015934074
+  - We decided to work together throghout the project and did not split the work globally. Each person, at the end, had similar contribution and context. 
+### Q2:
+  - lsmod | grep kvm
+  - rmmod kvm_intel
+  - insmod /lib/modules/5.15.0+/kernal/arch/x86/kvm/kvm-intel.ko ept=0
+
+### Output: 
+  - With EPT (Nested Paging)
+    - ![](out/3-6.png)
+  - Without EPT (Shadow Paging) 
+    - ![](out/3-5.png)
+
   
