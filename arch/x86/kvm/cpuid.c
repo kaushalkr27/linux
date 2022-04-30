@@ -1479,7 +1479,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 		} else {
 			eax = atomic_read(&exits_array[ecx]);
 			printk("CPUID - 0x4FFFFFFD\n");
-			for (i = 0; i < 70; i++) {
+			for (int i = 0; i < 70; i++) {
 				//eax = atomic_read(&exits_array[ecx]);
 				printk("Exit Reason: %u, Times Occurred: %u\n", i, atomic_read(&exits_array[i]));
 			}
@@ -1495,7 +1495,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 			ebx = exit_cpu_cycles >> 32;
 			ecx = exit_cpu_cycles & 0xFFFFFFFF;
 			printk("CPUID - 0x4FFFFFFC\n");
-			for (i = 0; i < 70; i++) {
+			for (int i = 0; i < 70; i++) {
 				//exit_cpu_cycles = atomic64_read(&exits_cycles_array[ecx]);
 				//ebx = exit_cpu_cycles >> 32;
 				//ecx = exit_cpu_cycles & 0xFFFFFFFF;
