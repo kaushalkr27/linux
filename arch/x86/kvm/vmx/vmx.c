@@ -6006,8 +6006,6 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
  * assistance.
  */
 
-extern u32 total_exits;
-extern u64 total_cycles;
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
@@ -6015,18 +6013,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
 
-	u64 start, end, diff;
-	int ret;
-
-	total_exits++;
-
-	start = rdtsc_customize();
 	ret = __vmx_handle_exit(vcpu, exit_fastpath);
-
-	end = rdtsc();
-
-	diff = (end - start);
-	total_cycles += diff;
 
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
@@ -6199,27 +6186,32 @@ unexpected_vmexit:
 	return 0;
 }
 
+uint64_t rdtsc_customize(void){
+    unsigned int lo,hi;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t)hi << 32) | lo;
+}
+
+
+extern u32 total_exits;
+extern u64 total_cycles;
 static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
-	uint64_t time_before_exit;	
-	uint64_t time_after_exit;	
-	uint64_t cpu_cycle;	
-	extern uint64_t all_cpu_cycles;	
-	uint16_t exit_handler_index;	
-	extern atomic_t exits_array[70];	
-	extern atomic_long_t exits_cycles_array[70];	
-	struct vcpu_vmx *vmx = to_vmx(vcpu);	
-	union vmx_exit_reason exit_reason = vmx->exit_reason;	
-	exit_handler_index = array_index_nospec((u16)exit_reason.basic, kvm_vmx_max_exit_handlers);	
-	time_before_exit = rdtsc();
+
+	u64 start, end, diff;
+	int ret;
+
+	total_exits++;
+
+	start = rdtsc_customize();
 
 	int ret = __vmx_handle_exit(vcpu, exit_fastpath);
 
-	time_after_exit = rdtsc();	
-	cpu_cycle = (time_after_exit - time_before_exit);	
-	all_cpu_cycles = (all_cpu_cycles + cpu_cycle);	
-	atomic_inc(&exits_array[exit_handler_index]);	
-	atomic64_add(cpu_cycle, &exits_cycles_array[exit_handler_index]);
+	end = rdtsc_customize();
+
+	diff = (end - start);
+	total_cycles += diff;
+
 
 	/*
 	 * Exit to user space when bus lock detected to inform that there is
