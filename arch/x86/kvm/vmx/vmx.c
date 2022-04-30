@@ -6006,10 +6006,12 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
  * assistance.
  */
 
+extern u32 total_exits;
 EXPORT_SYMBOL(total_exits);
+
+
 static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
-	extern u32 total_exits;
 
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
@@ -6189,6 +6191,11 @@ unexpected_vmexit:
 	return 0;
 }
 
+extern uint64_t all_cpu_cycles;
+extern atomic_t exits_array[70];
+extern atomic_long_t exits_cycles_array[70];
+
+
 EXPORT_SYMBOL(all_cpu_cycles);
 EXPORT_SYMBOL(exits_array);
 EXPORT_SYMBOL(exits_cycles_array);
@@ -6201,10 +6208,8 @@ static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	uint64_t time_before_exit;
 	uint64_t time_after_exit;
 	uint64_t cpu_cycle;
-	extern uint64_t all_cpu_cycles;
 	uint16_t exit_handler_index;
-	extern atomic_t exits_array[70];
-	extern atomic_long_t exits_cycles_array[70];
+
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
 	exit_handler_index = array_index_nospec((u16)exit_reason.basic, kvm_vmx_max_exit_handlers);
