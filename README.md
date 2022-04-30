@@ -86,9 +86,10 @@
   - Kaushal Karinaga Shetter Raju - 0x4FFFFFFC
   - Siddh Patel - 0x4FFFFFFC
 
-### Q2:
+### Q2: Steps
   - Assignment 3 is a continuation of Assignment 2, therefore the steps are the same, with the exception of the CPUID leaf node in the inner VM.
   - Implement CPUID leaf nodes 0x4FFFFFFC and 0x4FFFFFFD in the Linux kernel's cpuid.c and vmx.c files.
+  - In the case of these two leaf nodes, to return the number of exits or CPU cycles for a specific exit reason, do the following command cpuid -l 0x4FFFFFF[C/D] -s [Exit Reason], -l specifies the leaf and -s specifies the subleaf (Example: cpuid -l 0x4FFFFFFC -s 0 to get the number of CPU cycles on exit reason 0)
   - Command in the inner VM:
     - cpuid -l 0x4FFFFFFC
     - cpuid -l 0x4FFFFFFD
